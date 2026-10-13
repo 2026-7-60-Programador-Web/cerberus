@@ -1,0 +1,743 @@
+:root {
+    --fundo: #ffffff;
+    --texto: #212529;
+    --laranja: #ff7a00;
+    --laranja-hover: #e56a00;
+    --card-fundo: #f8f9fa;
+    --borda: #ffe0c2;
+}
+
+[data-theme="dark"] {
+    --fundo: #121212;
+    --texto: #f1f1f1;
+    --card-fundo: #1e1e1e;
+    --borda: #3a2412;
+}
+
+body {
+    background-color: var(--fundo);
+    color: var(--texto);
+    transition: background-color .3s ease, color .3s ease;
+}
+
+.navbar-cerberus {
+    background-color: var(--fundo) !important;
+    border-bottom: 2px solid var(--laranja);
+}
+
+.logo-cerberus {
+    height: 44px;
+    width: auto;
+}
+
+.btn-outline-laranja {
+    border-color: var(--laranja);
+    color: var(--laranja);
+    background: transparent;
+}
+.btn-outline-laranja:hover {
+    background-color: var(--laranja);
+    color: #fff;
+}
+
+.btn-tema {
+    border: 1px solid var(--laranja);
+    color: var(--laranja);
+    background: transparent;
+    font-size: .85rem;
+    line-height: 1;
+    padding: .35rem .55rem;
+    border-radius: 50rem;
+}
+.btn-tema:hover {
+    background-color: var(--laranja);
+    color: #fff;
+}
+
+main.container {
+    background-color: var(--card-fundo);
+    border: 1px solid var(--borda);
+    border-radius: .5rem;
+}
+
+/* ==========================================================
+   PAINEL DO ADMINISTRADOR — menu lateral recolhível
+   ========================================================== */
+
+:root {
+    --sidebar-largura: 250px;
+    --sidebar-largura-recolhida: 72px;
+    --altura-topo: 64px;
+    --laranja-suave: rgba(255, 122, 0, .12);
+}
+
+/* ---------- menu lateral ---------- */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: var(--sidebar-largura);
+    display: flex;
+    flex-direction: column;
+    background-color: var(--card-fundo);
+    border-right: 1px solid var(--borda);
+    overflow-x: hidden;
+    z-index: 1040;
+    transition: width .3s ease, transform .3s ease;
+}
+
+.sidebar-marca {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    height: var(--altura-topo);
+    padding-left: .9rem;
+    border-bottom: 2px solid var(--laranja);
+    flex-shrink: 0;
+}
+
+.logo-sidebar {
+    height: 40px;
+    width: auto;
+    flex-shrink: 0;
+}
+
+.sidebar-titulo {
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--laranja);
+}
+
+.sidebar-texto {
+    white-space: nowrap;
+}
+
+.sidebar-nav {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.sidebar-menu {
+    list-style: none;
+    margin: 0;
+    padding: .75rem 0;
+}
+
+.sidebar-rodape {
+    padding: .5rem 0;
+    border-top: 1px solid var(--borda);
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: .85rem;
+    padding: .8rem 1.5rem;
+    color: var(--texto);
+    text-decoration: none;
+    transition: background-color .2s ease, color .2s ease;
+}
+
+.sidebar-link i {
+    width: 1.5rem;            /* largura fixa: o ícone não "pula" ao recolher */
+    font-size: 1.3rem;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.sidebar-link:hover {
+    background-color: var(--laranja-suave);
+    color: var(--laranja);
+}
+
+.sidebar-link.ativo {
+    background-color: var(--laranja-suave);
+    color: var(--laranja);
+    box-shadow: inset 3px 0 0 var(--laranja);
+}
+
+/* ---------- área principal ---------- */
+.painel-principal {
+    margin-left: var(--sidebar-largura);
+    min-height: 100vh;
+    transition: margin-left .3s ease;
+}
+
+.topbar {
+    position: sticky;
+    top: 0;
+    height: var(--altura-topo);
+    background-color: var(--fundo);
+    border-bottom: 2px solid var(--laranja);
+    z-index: 1030;
+}
+
+.painel-conteudo {
+    padding: 1.5rem;
+}
+
+.card-painel {
+    background-color: var(--card-fundo);
+    border: 1px solid var(--borda);
+    border-radius: .5rem;
+    padding: 1.5rem;
+}
+
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, .5);
+    z-index: 1035;
+}
+
+/* ---------- computador/tablet: menu recolhido (só ícones) ---------- */
+@media (min-width: 768px) {
+    body.sidebar-recolhida .sidebar {
+        width: var(--sidebar-largura-recolhida);
+    }
+
+    body.sidebar-recolhida .painel-principal {
+        margin-left: var(--sidebar-largura-recolhida);
+    }
+
+    body.sidebar-recolhida .sidebar-texto {
+        display: none;
+    }
+
+    body.sidebar-recolhida .sidebar-marca,
+    body.sidebar-recolhida .sidebar-link {
+        justify-content: center;
+        gap: 0;
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+/* ---------- celular: menu escondido, abre por cima do conteúdo ---------- */
+@media (max-width: 767.98px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .painel-principal {
+        margin-left: 0;
+    }
+
+    body.sidebar-aberta .sidebar {
+        transform: translateX(0);
+    }
+
+    body.sidebar-aberta .sidebar-overlay {
+        display: block;
+    }
+
+    body.sidebar-aberta {
+        overflow: hidden;
+    }
+}
+
+
+
+/* ==========================================================
+   PÁGINA DE LOGIN
+   modo claro: branco + laranja | modo escuro: preto + branco
+   ========================================================== */
+
+.login-pagina {
+    --login-destaque: var(--laranja);
+    --login-destaque-hover: var(--laranja-hover);
+    --login-destaque-texto: #ffffff;
+    --login-suave: rgba(255, 122, 0, .2);
+    --login-card: #ffffff;
+    --login-input: #ffffff;
+    --login-borda: var(--borda);
+
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    background: linear-gradient(180deg, #fff1e3 0%, var(--fundo) 55%);
+}
+
+[data-theme="dark"] .login-pagina {
+    --login-destaque: var(--laranja) ;
+    --login-destaque-hover:  var(--laranja-hover);
+    --login-destaque-texto: #ffffff;
+    --login-suave: rgba(255, 255, 255, .2);
+    --login-card: #1a1a1a;
+    --login-input: #0d0d0d;
+    --login-borda: #333333;
+
+    background: linear-gradient(180deg, #000000 0%, var(--fundo) 55%);
+}
+
+/* ---------- logo e textos acima do card ---------- */
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.login-logo {
+    height: 110px;
+    width: auto;
+    margin-bottom: .75rem;
+}
+
+.login-marca {
+    margin: 0;
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--login-destaque);
+}
+
+.login-subtitulo {
+    margin-bottom: 1.5rem;
+    font-size: .9rem;
+    opacity: .7;
+}
+
+/* ---------- card do formulário ---------- */
+.login-card {
+    background-color: var(--login-card);
+    color: var(--texto);
+    border: 1px solid var(--login-borda);
+    border-top: 3px solid var(--login-destaque);
+    border-radius: .75rem;
+    text-align: left;
+    box-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, .08);
+}
+
+.login-card .form-label {
+    font-size: .9rem;
+    font-weight: 600;
+}
+
+.login-card .form-control,
+.login-card .input-group-text {
+    background-color: var(--login-input);
+    border-color: var(--login-borda);
+    color: var(--texto);
+}
+
+.login-card .input-group-text {
+    color: var(--login-destaque);
+}
+
+.login-card .form-control:focus {
+    background-color: var(--login-input);
+    color: var(--texto);
+    border-color: var(--login-destaque);
+    box-shadow: 0 0 0 .2rem var(--login-suave);
+}
+
+.login-card .input-group:focus-within .input-group-text {
+    border-color: var(--login-destaque);
+}
+
+/* ---------- botão entrar ---------- */
+.btn-login {
+    background-color: var(--login-destaque);
+    border-color: var(--login-destaque);
+    color: var(--login-destaque-texto);
+    font-weight: 600;
+    padding: .65rem;
+}
+
+.btn-login:hover,
+.btn-login:focus {
+    background-color: var(--login-destaque-hover);
+    border-color: var(--login-destaque-hover);
+    color: var(--login-destaque-texto);
+}
+
+/* ---------- mensagem de erro ---------- */
+.login-alerta {
+    background-color: transparent;
+    border: 1px solid #dc3545;
+    color: #dc3545;
+    font-size: .9rem;
+}
+
+[data-theme="dark"] .login-alerta {
+    border-color: #ff6b78;
+    color: #ff6b78;
+}
+
+/* ---------- botão de tema discreto (canto superior direito) ---------- */
+.login-tema {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    opacity: .6;
+    transition: opacity .2s ease;
+}
+
+.login-pagina .btn-tema {
+    border-color: var(--login-destaque);
+    color: var(--login-destaque);
+}
+
+.login-pagina .btn-tema:hover {
+    opacity: 1;
+    background-color: var(--login-destaque);
+    color: var(--login-destaque-texto);
+}
+
+/* ---------- celular pequeno ---------- */
+@media (max-width: 575.98px) {
+    .login-logo {
+        height: 90px;
+    }
+}
+
+
+/* ==========================================================
+   ÁREA DO CLIENTE — componentes extras
+   ========================================================== */
+.indicador-numero {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--laranja);
+}
+
+.btn-laranja {
+    background-color: var(--laranja);
+    border-color: var(--laranja);
+    color: #fff;
+}
+.btn-laranja:hover {
+    background-color: var(--laranja-hover);
+    border-color: var(--laranja-hover);
+    color: #fff;
+}
+
+.carteirinha {
+    max-width: 380px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    text-align: center;
+    background-color: var(--card-fundo);
+    border: 2px solid var(--laranja);
+    border-radius: 1rem;
+}
+
+.carteirinha-qr {
+    display: inline-block;
+    padding: .75rem;
+    background-color: #fff;   /* QR Code precisa de fundo branco para ser lido */
+    border-radius: .5rem;
+}
+
+.foto-perfil {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid var(--laranja);
+}
+
+/* ==========================================================
+   PORTARIA — controle de entrada e saída
+   (reaproveita as variáveis e o visual do restante do sistema)
+   ========================================================== */
+
+.btn-outline-laranja.active,
+.btn-outline-laranja:active {
+    background-color: var(--laranja);
+    border-color: var(--laranja);
+    color: #fff;
+}
+
+/* botões grandes o bastante para usar com o dedo */
+.btn-acao {
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-acao-tabela {
+    min-height: 40px;
+}
+
+/* ---------- abas da Portaria ---------- */
+.portaria-abas {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: .25rem;
+    border-bottom: 2px solid var(--borda);
+}
+
+.portaria-aba {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .15rem;
+    min-height: 56px;
+    padding: .5rem .25rem;
+    margin-bottom: -2px;
+    font-size: .85rem;
+    color: var(--texto);
+    text-decoration: none;
+    border-bottom: 3px solid transparent;
+}
+
+.portaria-aba i {
+    font-size: 1.25rem;
+}
+
+.portaria-aba:hover {
+    color: var(--laranja);
+}
+
+.portaria-aba:focus-visible {
+    outline: 3px solid var(--laranja);
+    outline-offset: -3px;
+}
+
+.portaria-aba.ativa {
+    color: var(--laranja);
+    font-weight: 600;
+    border-bottom-color: var(--laranja);
+}
+
+@media (min-width: 576px) {
+    .portaria-abas {
+        display: flex;
+        gap: .5rem;
+    }
+
+    .portaria-aba {
+        flex-direction: row;
+        gap: .5rem;
+        min-height: 48px;
+        padding: .7rem 1.1rem;
+        font-size: 1rem;
+    }
+}
+
+/* ---------- ficha da pessoa localizada ---------- */
+.pessoa-card {
+    background-color: var(--card-fundo);
+    border: 1px solid var(--borda);
+    border-radius: .75rem;
+    overflow: hidden;
+}
+
+.status-faixa {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: .9rem 1.25rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.status-faixa i {
+    font-size: 1.6rem;
+}
+
+.status-ok       { background-color: #146c43; color: #fff; }
+.status-atencao  { background-color: #ffc107; color: #212529; }
+.status-bloqueio { background-color: #b02a37; color: #fff; }
+
+.motivos-acesso {
+    margin: 0;
+    padding: .75rem 1rem .75rem 2rem;
+    border-left: 4px solid;
+    border-radius: .25rem;
+}
+
+.motivos-atencao  { border-color: #ffc107; background-color: rgba(255, 193, 7, .15); }
+.motivos-bloqueio { border-color: #b02a37; background-color: rgba(176, 42, 55, .12); }
+
+.dados-pessoa {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: .9rem 1.5rem;
+}
+
+.dados-pessoa dt {
+    font-size: .8rem;
+    font-weight: 500;
+    opacity: .7;
+}
+
+.dados-pessoa dd {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.dados-largo {
+    grid-column: 1 / -1;
+}
+
+.acoes-pessoa {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+}
+
+.acoes-pessoa > form,
+.acoes-pessoa > details {
+    flex: 1 1 220px;
+}
+
+.negar-manual summary {
+    list-style: none;
+}
+
+.negar-manual summary::-webkit-details-marker {
+    display: none;
+}
+
+/* ---------- alertas e acessos recentes ---------- */
+.lista-alertas,
+.lista-eventos {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.alerta-item {
+    display: flex;
+    align-items: flex-start;
+    gap: .6rem;
+    margin-bottom: .5rem;
+    padding: .65rem .8rem;
+    border-left: 4px solid;
+    border-radius: .35rem;
+}
+
+.alerta-item:last-child {
+    margin-bottom: 0;
+}
+
+.alerta-item i {
+    margin-top: .1rem;
+}
+
+.alerta-danger  { border-color: #dc3545; background-color: rgba(220, 53, 69, .1); }
+.alerta-warning { border-color: #ffc107; background-color: rgba(255, 193, 7, .14); }
+.alerta-info    { border-color: #0d6efd; background-color: rgba(13, 110, 253, .1); }
+
+.lista-eventos li {
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+    padding: .6rem 0;
+    border-bottom: 1px solid var(--borda);
+}
+
+.lista-eventos li:last-child {
+    border-bottom: 0;
+}
+
+.lista-eventos i {
+    flex-shrink: 0;
+    width: 1.5rem;
+    font-size: 1.3rem;
+    text-align: center;
+}
+
+.evento-texto {
+    flex: 1;
+    min-width: 0;
+}
+
+.evento-hora {
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+    opacity: .8;
+}
+
+.evento-entrada { color: #198754; }
+.evento-saida   { color: #0d6efd; }
+.evento-negado  { color: #dc3545; }
+
+/* ---------- placas ---------- */
+.campo-placa {
+    text-transform: uppercase;
+    letter-spacing: .08em;
+}
+
+.placa {
+    letter-spacing: .08em;
+}
+
+/* ---------- tabelas viram cartões no celular (sem rolagem lateral) ---------- */
+.tabela-cartoes {
+    --bs-table-bg: transparent;
+}
+
+@media (max-width: 767.98px) {
+    .tabela-cartoes thead {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+    }
+
+    .tabela-cartoes,
+    .tabela-cartoes tbody,
+    .tabela-cartoes tr,
+    .tabela-cartoes td {
+        display: block;
+        width: 100%;
+    }
+
+    .tabela-cartoes tr {
+        margin-bottom: .75rem;
+        padding: .5rem .9rem;
+        background-color: var(--fundo);
+        border: 1px solid var(--borda);
+        border-radius: .5rem;
+    }
+
+    .tabela-cartoes tr:last-child {
+        margin-bottom: 0;
+    }
+
+    .tabela-cartoes > :not(caption) > * > * {
+        padding: .3rem 0;
+        border: 0;
+        box-shadow: none;
+        background-color: transparent;
+    }
+
+    .tabela-cartoes td[data-label] {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        text-align: right;
+    }
+
+    .tabela-cartoes td[data-label]::before {
+        content: attr(data-label);
+        flex-shrink: 0;
+        font-weight: 500;
+        text-align: left;
+        opacity: .7;
+    }
+
+    .tabela-cartoes td.celula-acao {
+        padding-top: .6rem;
+    }
+
+    .btn-acao-tabela {
+        width: 100%;
+        min-height: 44px;
+    }
+}
