@@ -15,8 +15,6 @@ $paginas = [
     "carteirinha" => ["titulo" => "Carteirinha digital", "icone" => "bi-qr-code"],
     "convidados"  => ["titulo" => "Meus convidados",     "icone" => "bi-person-plus"],
     "financeiro"  => ["titulo" => "Financeiro",          "icone" => "bi-cash-coin"],
-    "reservas"    => ["titulo" => "Reservas e eventos",  "icone" => "bi-calendar-event"],
-    "avisos"      => ["titulo" => "Avisos",              "icone" => "bi-megaphone"],
     "acessos"     => ["titulo" => "Meus acessos",        "icone" => "bi-door-open"],
     "suporte"     => ["titulo" => "Suporte",             "icone" => "bi-headset"],
 ];
