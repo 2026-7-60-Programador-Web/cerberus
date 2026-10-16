@@ -67,7 +67,10 @@ if(isset($_SESSION["email"])){
                     </div>
 
                     <button type="submit" class="btn btn-login w-100">Entrar</button>
+
+                   <p style = "font-size:13px; padding-top:8px;" >Ainda não é cadastrado?<a href=""> Cadastre seu clube aqui!</a></p>
                 </form>
+
             </div>
         </div>
     </main>

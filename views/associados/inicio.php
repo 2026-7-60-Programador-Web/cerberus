@@ -3,7 +3,7 @@
 $cards = [
     ["Associação",             "Ativa",     "carteirinha"],
     ["Mensalidade em aberto",  "R$ 350,00", "financeiro"],
-    ["Convidados usados",      "3 de 5",    "convidados"],
+    ["Convidados usados",      "3 de 5",    "meus-convidados"],
    
 ];
 ?>

@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+ob_start();
 
 // só entra quem está logado E não é administrador
 if(!isset($_SESSION["email"]) || $_SESSION["admin"] !== false){
@@ -13,10 +14,10 @@ $paginas = [
     "inicio"      => ["titulo" => "Início",              "icone" => "bi-house"],
     "perfil"      => ["titulo" => "Meu perfil",          "icone" => "bi-person-circle"],
     "carteirinha" => ["titulo" => "Carteirinha digital", "icone" => "bi-qr-code"],
-    "convidados"  => ["titulo" => "Meus convidados",     "icone" => "bi-person-plus"],
+    "meus-convidados"  => ["titulo" => "Meus convidados",     "icone" => "bi-person-plus"],
     "financeiro"  => ["titulo" => "Financeiro",          "icone" => "bi-cash-coin"],
-    "acessos"     => ["titulo" => "Meus acessos",        "icone" => "bi-door-open"],
-    "suporte"     => ["titulo" => "Suporte",             "icone" => "bi-headset"],
+    "Meus-acessos"     => ["titulo" => "Meus acessos",        "icone" => "bi-door-open"],
+    "configuracoes"     => ["titulo" => "Configurações",             "icone" => "bi-gear"],
 ];
 
 // qual página o usuário pediu? (padrão: início)
