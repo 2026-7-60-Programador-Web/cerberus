@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+require_once __DIR__ . "/../../core/acessos-site.php";
 
 $usuariosCadastrados = [
     [
@@ -58,6 +59,8 @@ if(!empty($mensagem)){
     header("Location: ../../views/autenticacao/login.php");
     exit;
 }
+
+registrarLoginSite();   // soma 1 login no dia
 
 $_SESSION["email"] = $usuarioEncontrado["email"];
 $_SESSION["admin"] = $usuarioEncontrado["admin"];

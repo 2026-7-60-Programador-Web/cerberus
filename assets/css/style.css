@@ -741,3 +741,57 @@ main.container {
         min-height: 44px;
     }
 }
+
+
+/* ==========================================================
+   ADMINISTRADOR — Sócios e Cadastro dos sócios
+   ========================================================== */
+
+/* grade dos últimos 30 dias de frequência (cada quadradinho = 1 dia) */
+.freq-grade {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+}
+
+.freq-dia {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    background-color: var(--borda);
+}
+
+.freq-dia.presente {
+    background-color: var(--laranja);
+}
+
+/* estrelas das notas de feedback */
+.estrelas {
+    color: var(--laranja);
+    white-space: nowrap;
+}
+
+.barra-convidados {
+    height: .5rem;
+    background-color: var(--borda);
+}
+
+.barra-convidados .progress-bar {
+    background-color: var(--laranja);
+}
+
+.barra-convidados .progress-bar.cheio {
+    background-color: #dc3545;
+}
+
+.campo-busca {
+    max-width: 360px;
+}
+
+.ficha-secao {
+    font-size: .8rem;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--laranja);
+    font-weight: 600;
+}
