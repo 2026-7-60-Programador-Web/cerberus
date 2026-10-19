@@ -1,6 +1,8 @@
 <?php
 
 session_start();
+require_once __DIR__ . "/../../core/acessos-site.php";
+registrarAcessoSite();   // conta a visita (e o visitante único) na sessão
 
 $mensagem = $_SESSION["mensagem"] ?? null;
 unset($_SESSION["mensagem"]);

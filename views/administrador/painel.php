@@ -1,58 +1,68 @@
 <?php
 
-session_start();
+$tituloPagina = "Painel";
+$menuAtivo    = "painel";
+require __DIR__ . "/partials/cabecalho.php";
 
-if(!isset($_SESSION["email"]) || $_SESSION["admin"] !== true){
-    header("Location: ../autenticacao/login.php");
-    exit;
+$resumo = admResumoGeral();
+
+// cada card: [rótulo, valor, página para onde o link leva, ícone]
+$cards = [
+    ["Sócios ativos",                $resumo["ativos"] . " de " . $resumo["total_socios"],          "socios.php",                  "bi-people"],
+    ["Presentes hoje no clube",      $resumo["presentes_hoje"],                                     "portaria.php",                "bi-door-open"],
+    ["Contratos a vencer (60 dias)", count($resumo["a_vencer"]),                                    "socios.php",                  "bi-hourglass-split"],
+    ["Mensalidades em aberto",       admMoeda($resumo["valor_em_aberto"]),                          "socios.php",                  "bi-exclamation-circle"],
+    ["Convidados pendentes",         $resumo["convidados_pendentes"],                               "convidados.php?aba=convites", "bi-person-plus"],
+    ["Nota média dos feedbacks",     number_format($resumo["nota_media"], 1, ",", ".") . " / 5",    "socios.php?aba=feedback",     "bi-chat-heart"],
+];
+
+// avisos que merecem atenção do administrador
+$avisos = [];
+foreach($resumo["vencidos"] as $s){
+    $avisos[] = ["danger", "bi-x-octagon", "Contrato de {$s['nome']} vencido há " . abs($s["dias_restantes"]) . " dia(s).", "socios.php"];
 }
-
+foreach($resumo["a_vencer"] as $s){
+    $avisos[] = ["warning", "bi-hourglass-split", "Contrato de {$s['nome']} vence em " . admTempoRestante($s["dias_restantes"]) . " (" . admData($s["fim"]) . ").", "socios.php"];
+}
+foreach($resumo["devedores"] as $s){
+    $avisos[] = ["info", "bi-cash-coin", "{$s['nome']} está com mensalidade em aberto (" . admMoeda($s["mensalidade"]) . ").", "socios.php"];
+}
+if($resumo["convidados_pendentes"] > 0){
+    $avisos[] = ["info", "bi-person-check", $resumo["convidados_pendentes"] . " convite(s) de convidados aguardando aprovação.", "convidados.php?aba=convites"];
+}
 ?>
 
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel — Administrador</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="../../assets/css/style.css" rel="stylesheet">
-</head>
-<body>
+<h1 class="h4 mb-4">Olá, <?= ae($nomeAdmin) ?>!</h1>
 
-<div class="painel-layout">
-
-    <?php $menuAtivo = "painel"; include __DIR__ . "/partials/menu.php"; ?>
-
-    <!-- fundo escuro que aparece atrás do menu no celular -->
-    <div id="sidebarOverlay" class="sidebar-overlay"></div>
-
-    <!-- ÁREA PRINCIPAL -->
-    <div class="painel-principal">
-
-        <header class="topbar d-flex align-items-center px-3">
-            <button id="btnMenu" type="button" class="btn btn-outline-laranja btn-sm"
-                    title="Recolher/expandir menu" aria-controls="sidebar" aria-expanded="true">
-                <i class="bi bi-list fs-5"></i>
-            </button>
-            <span class="navbar-text ms-3 d-none d-sm-inline">Bem-vindo(a), administrador(a)!</span>
-
-            <div class="ms-auto">
-                <button id="btnTema" type="button" class="btn btn-tema" title="Alternar tema">🌙</button>
+<!-- ========== INDICADORES ========== -->
+<div class="row g-3 mb-4">
+    <?php foreach($cards as $card): ?>
+        <div class="col-12 col-md-6 col-xl-4">
+            <div class="card-painel h-100 position-relative">
+                <small class="text-secondary"><i class="bi <?= $card[3] ?> me-1"></i><?= ae($card[0]) ?></small>
+                <div class="indicador-numero"><?= ae($card[1]) ?></div>
+                <a href="<?= $card[2] ?>" class="stretched-link small">Ver detalhes</a>
             </div>
-        </header>
-
-        <main class="painel-conteudo">
-            <div class="card-painel">
-                <h1 class="h4 mb-3">Painel</h1>
-                <p class="mb-0">Esta página só deve aparecer para administradores logados.</p>
-            </div>
-        </main>
-
-    </div>
+        </div>
+    <?php endforeach; ?>
 </div>
 
-<script src="../../assets/js/script.js"></script>
-</body>
-</html>
+<!-- ========== AVISOS ========== -->
+<div class="card-painel">
+    <h2 class="h6 mb-3"><i class="bi bi-bell me-1"></i> Avisos para o administrador</h2>
+    <?php if(empty($avisos)): ?>
+        <p class="mb-0 text-secondary">Nenhum aviso no momento.</p>
+    <?php else: ?>
+        <ul class="lista-alertas">
+            <?php foreach($avisos as $a): ?>
+                <li class="alerta-item alerta-<?= $a[0] ?>">
+                    <i class="bi <?= $a[1] ?>"></i>
+                    <span><?= ae($a[2]) ?> <a href="<?= $a[3] ?>">Abrir</a></span>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
+</div>
+
+<?php
+require __DIR__ . "/partials/rodape.php";

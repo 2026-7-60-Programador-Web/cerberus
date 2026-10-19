@@ -9,6 +9,9 @@ if(!isset($_SESSION["email"]) || $_SESSION["admin"] !== false){
     exit;
 }
 
+require_once __DIR__ . "/../../core/acessos-site.php";
+registrarAcessoSite();   // conta o acesso do associado ao site
+
 // lista das páginas: chave (vai na URL) => título e ícone do menu
 $paginas = [
     "inicio"      => ["titulo" => "Início",              "icone" => "bi-house"],
