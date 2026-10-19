@@ -6,6 +6,11 @@ $mensagem = $_SESSION["mensagem"] ?? null;
 unset($_SESSION["mensagem"]);
 
 
+if(!empty($_SESSION["clube_id"])){
+    header("Location: ../clube/painel.php");
+    exit;
+}
+
 if(isset($_SESSION["email"])){
     if($_SESSION["admin"] === true){
         header("Location: ../administrador/painel.php");
@@ -68,7 +73,7 @@ if(isset($_SESSION["email"])){
 
                     <button type="submit" class="btn btn-login w-100">Entrar</button>
 
-                   <p style = "font-size:13px; padding-top:8px;" >Ainda não é cadastrado?<a href=""> Cadastre seu clube aqui!</a></p>
+                   <p style = "font-size:13px; padding-top:8px;" >Ainda não é cadastrado?<a href="../clube/cadastro.php"> Cadastre seu clube aqui!</a></p>
                 </form>
 
             </div>
