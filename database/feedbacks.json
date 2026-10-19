@@ -1,0 +1,29 @@
+[
+    {
+        "id": 1,
+        "nome": "Emily Vitória",
+        "email": "emily@email.com",
+        "tipo": "elogio",
+        "mensagem": "muito bom, gostei do ambiente, super agradável.",
+        "criado_em": "2026-10-19 20:09:23",
+        "lido": false
+    },
+    {
+        "id": 2,
+        "nome": "Emily Vitória",
+        "email": "emily@email.com",
+        "tipo": "sugestao",
+        "mensagem": "precisa melhorar mais no atendimento, demora muito chegar o pedido.",
+        "criado_em": "2026-10-19 20:09:52",
+        "lido": false
+    },
+    {
+        "id": 3,
+        "nome": "Emily Vitória",
+        "email": "emily@email.com",
+        "tipo": "problema",
+        "mensagem": "tive um problema em colocar uma pessoa gerar um qr code, como faço?",
+        "criado_em": "2026-10-19 20:10:28",
+        "lido": false
+    }
+]

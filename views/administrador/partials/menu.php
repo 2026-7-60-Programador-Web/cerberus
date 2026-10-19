@@ -1,6 +1,6 @@
 <?php
 // Menu lateral do administrador. Antes de incluir, defina $menuAtivo:
-// "painel", "convidados" ou "portaria".
+// "painel", "convidados", "portaria" ou "configuracoes".
 $menuAtivo = $menuAtivo ?? "";
 
 $itensMenu = [
@@ -8,7 +8,7 @@ $itensMenu = [
     ["chave" => "socios",        "href" => "../associados/painel.php",  "titulo" => "Sócios",        "icone" => "bi-people"],
     ["chave" => "convidados",    "href" => "convidados.php",            "titulo" => "Convidados",    "icone" => "bi-person-plus"],
     ["chave" => "portaria",      "href" => "portaria.php",              "titulo" => "Portaria",      "icone" => "bi-door-open"],
-    ["chave" => "configuracoes", "href" => "#",                         "titulo" => "Configurações", "icone" => "bi-gear"],
+    ["chave" => "configuracoes", "href" => "configuracoes.php",        "titulo" => "Configurações", "icone" => "bi-gear"],
 ];
 ?>
     <!-- MENU LATERAL -->
