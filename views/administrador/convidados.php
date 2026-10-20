@@ -27,7 +27,7 @@ function antigo(array $antigo, string $campo): string {
 }
 
 function formatarData(string $data): string {
-    return date("d/m/Y", strtotime($data));
+    return $data !== "" ? date("d/m/Y", strtotime($data)) : "—";   // nascimento é opcional
 }
 
 function formatarDataHora(string $data): string {
@@ -39,7 +39,7 @@ function formatarCpf(string $cpf): string {
 }
 
 function formatarCelular(string $celular): string {
-    return preg_replace("/(\d{2})(\d{5})(\d{4})/", "($1) $2-$3", $celular);
+    return $celular !== "" ? preg_replace("/(\d{2})(\d{5})(\d{4})/", "($1) $2-$3", $celular) : "—";   // celular é opcional
 }
 
 ?>
@@ -118,15 +118,15 @@ function formatarCelular(string $celular): string {
                                            value="<?= antigo($antigo, 'nome') ?>" required>
                                 </div>
                                 <div class="col-12 col-md-6 col-lg-3">
-                                    <label for="nascimento" class="form-label">Data de nascimento</label>
+                                    <label for="nascimento" class="form-label">Data de nascimento <small class="text-secondary">(opcional)</small></label>
                                     <input type="date" class="form-control" id="nascimento" name="nascimento"
-                                           max="<?= date('Y-m-d') ?>" value="<?= antigo($antigo, 'nascimento') ?>" required>
+                                           max="<?= date('Y-m-d') ?>" value="<?= antigo($antigo, 'nascimento') ?>">
                                 </div>
                                 <div class="col-12 col-md-6 col-lg-3">
-                                    <label for="celular" class="form-label">Celular</label>
+                                    <label for="celular" class="form-label">Celular <small class="text-secondary">(opcional)</small></label>
                                     <input type="tel" class="form-control" id="celular" name="celular"
                                            placeholder="(85) 99999-9999" maxlength="15"
-                                           value="<?= antigo($antigo, 'celular') ?>" required>
+                                           value="<?= antigo($antigo, 'celular') ?>">
                                 </div>
                                 <div class="col-12 col-md-6 col-lg-3">
                                     <label for="cpf" class="form-label">CPF</label>

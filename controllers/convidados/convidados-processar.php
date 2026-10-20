@@ -27,55 +27,64 @@ function voltar(string $aba, string $tipo, array $textos): void {
     exit;
 }
 
-$acao  = $_POST["acao"] ?? "";
+// lê um campo do formulário sempre como texto (evita erro se alguém mandar um array)
+function textoPost(string $campo): string {
+    $valor = $_POST[$campo] ?? "";
+
+    return is_string($valor) ? $valor : "";
+}
+
+$acao  = textoPost("acao");
+$pdo   = conectarBanco();   // conexão com o MySQL (core/conexao.php)
 $dados = carregarDados();
 
 switch($acao){
 
     /* ================= CADASTRAR CONVIDADO ================= */
     case "cadastrar":
-        $nome       = trim($_POST["nome"] ?? "");
-        $nascimento = $_POST["nascimento"] ?? "";
-        $celular    = somenteNumeros($_POST["celular"] ?? "");
-        $cpf        = somenteNumeros($_POST["cpf"] ?? "");
+        $nome       = limparNome(textoPost("nome"));
+        $nascimento = trim(textoPost("nascimento"));            // opcional
+        $celular    = somenteNumeros(textoPost("celular"));     // opcional
+        $cpf        = somenteNumeros(textoPost("cpf"));
         $erros      = [];
         $menor      = false;
 
-        if(count(preg_split("/\s+/", $nome)) < 2){
-            $erros[] = "Informe o nome completo do convidado.";
+        // NOME (obrigatório)
+        if(!nomeValido($nome)){
+            $erros[] = "Informe o nome completo do convidado (nome e sobrenome, somente letras).";
         }
 
-        if(!dataValida($nascimento)){
-            $erros[] = "Data de nascimento do convidado inválida.";
-        } else {
-            $menor = calcularIdade($nascimento) < 18;
+        // NASCIMENTO (opcional, mas se vier preenchido precisa ser uma data real)
+        if($nascimento !== ""){
+            if(!dataValida($nascimento)){
+                $erros[] = "Data de nascimento do convidado inválida.";
+            } else {
+                $menor = calcularIdade($nascimento) < 18;
+            }
         }
 
-        if(!celularValido($celular)){
+        // CELULAR (opcional, mas se vier preenchido precisa estar completo)
+        if($celular !== "" && !celularValido($celular)){
             $erros[] = "Celular do convidado inválido (use DDD + 9 dígitos).";
         }
 
+        // CPF (obrigatório): 1) é um CPF válido?  2) já existe no banco?
         if(!cpfValido($cpf)){
             $erros[] = "CPF do convidado inválido.";
-        } else {
-            foreach($dados["convidados"] as $c){
-                if($c["cpf"] === $cpf){
-                    $erros[] = "Já existe um convidado cadastrado com este CPF.";
-                    break;
-                }
-            }
+        } elseif(cpfJaCadastrado($pdo, $cpf)){
+            $erros[] = "Já existe um convidado cadastrado com este CPF.";
         }
 
         // responsável: obrigatório se o convidado for menor de idade
         $responsavel = null;
         if($menor){
-            $rNome       = trim($_POST["resp_nome"] ?? "");
-            $rNascimento = $_POST["resp_nascimento"] ?? "";
-            $rCelular    = somenteNumeros($_POST["resp_celular"] ?? "");
-            $rCpf        = somenteNumeros($_POST["resp_cpf"] ?? "");
+            $rNome       = limparNome(textoPost("resp_nome"));
+            $rNascimento = trim(textoPost("resp_nascimento"));
+            $rCelular    = somenteNumeros(textoPost("resp_celular"));
+            $rCpf        = somenteNumeros(textoPost("resp_cpf"));
 
-            if(count(preg_split("/\s+/", $rNome)) < 2){
-                $erros[] = "Informe o nome completo do responsável.";
+            if(!nomeValido($rNome)){
+                $erros[] = "Informe o nome completo do responsável (nome e sobrenome, somente letras).";
             }
 
             if(!dataValida($rNascimento)){
@@ -107,17 +116,27 @@ switch($acao){
             voltar("cadastro", "danger", $erros);
         }
 
-        $dados["convidados"][] = [
-            "id"          => proximoId($dados["convidados"]),
-            "nome"        => $nome,
-            "nascimento"  => $nascimento,
-            "celular"     => $celular,
-            "cpf"         => $cpf,
-            "menor"       => $menor,
-            "responsavel" => $responsavel,
-            "criado_em"   => date("Y-m-d H:i:s")
-        ];
-        salvarDados($dados);
+        // grava no MySQL
+        try {
+            inserirConvidado($pdo, [
+                "nome"        => $nome,
+                "cpf"         => $cpf,
+                "nascimento"  => $nascimento,
+                "celular"     => $celular,
+                "responsavel" => $responsavel
+            ]);
+        } catch(PDOException $e){
+            error_log("Erro ao cadastrar convidado: " . $e->getMessage());
+            $_SESSION["form_convidado"] = $_POST;
+
+            // 1062 = chave duplicada: o índice UNIQUE do banco barrou um CPF repetido
+            // (acontece se duas pessoas cadastrarem o mesmo CPF no mesmo instante)
+            if((int)($e->errorInfo[1] ?? 0) === 1062){
+                voltar("cadastro", "danger", ["Já existe um convidado cadastrado com este CPF."]);
+            }
+
+            voltar("cadastro", "danger", ["Não foi possível salvar o convidado agora. Tente novamente."]);
+        }
 
         voltar("cadastro", "success", ["Convidado cadastrado com sucesso!"]);
         break;
